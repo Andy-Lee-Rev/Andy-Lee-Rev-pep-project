@@ -74,4 +74,37 @@ public class MessageRepository {
             }
             return null;
     }
+
+    public Message deleteMessageById(Integer id) {
+        String sql = "SELECT * FROM Message WHERE message_id = ?";
+        String sql2 = "DELETE FROM Message WHERE message_id = ?";
+        Message message = null;
+
+        try (Connection conn = ConnectionUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+                stmt.setInt(1, id);
+                stmt2.setInt(1, id);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        message = new Message(
+                            rs.getInt("message_id"),
+                            rs.getInt("posted_by"),
+                            rs.getString("message_text"),
+                            rs.getLong("time_posted_epoch")
+                        );
+                    }
+                }
+                if (message != null) {
+                    int affectedRows = stmt2.executeUpdate();
+                    if (affectedRows > 0) {
+                        return message;
+                    } 
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
 }

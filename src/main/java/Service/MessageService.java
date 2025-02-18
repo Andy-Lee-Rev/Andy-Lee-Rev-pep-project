@@ -43,6 +43,10 @@ public class MessageService {
         return messageRepo.getMessageById(id);
     }
 
+    public Message deleteMessageById(Integer id) {
+        return messageRepo.deleteMessageById(id);
+    }
+
     public boolean validMessage(String str) {
         if (str.length() > 255 || isBlank(str)) {
             return false;
