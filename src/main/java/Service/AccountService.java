@@ -17,5 +17,26 @@ public class AccountService {
         
         return accountRepo.register(acc);
     }
+
+    public Account login(Account acc) {
+        if (acc == null || isBlank(acc.getUsername()) || isBlank(acc.getPassword())) {
+            return null; 
+        }
+
+        Account storedAccount = accountRepo.findByUsername(acc.getUsername());
+        if (storedAccount == null) {
+            return null; 
+        }
+
+        if (!storedAccount.getPassword().equals(acc.getPassword())) {
+            return null; 
+        }
+
+        return storedAccount;
+    }
+
+    private boolean isBlank(String str) {
+        return str == null || str.trim().isEmpty();
+    }
     
 }

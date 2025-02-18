@@ -22,6 +22,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerHandler);
+        app.post("/login", this::loginHandler);
 
         return app;
     }
@@ -42,6 +43,19 @@ public class SocialMediaController {
             context.status(400);
         } else {
             context.status(200).json(registeredAccount);
+        }
+        return;
+    }
+
+    private void loginHandler(Context context) {
+        Account acc = context.bodyAsClass(Account.class);
+        Account existsAccount = accountService.login(acc);
+
+        if (existsAccount == null) {
+            context.status(401);
+        }
+        else {
+            context.status(200).json(existsAccount);
         }
         return;
     }
