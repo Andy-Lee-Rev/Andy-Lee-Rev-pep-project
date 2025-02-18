@@ -6,6 +6,7 @@ import DAO.AccountRepository;
 import Model.Account;
 import DAO.MessageRepository;
 import Model.Message;
+import java.util.ArrayList;
 
 public class MessageService {
     private final AccountRepository accountRepo = new AccountRepository();
@@ -32,6 +33,10 @@ public class MessageService {
         }
 
         return savedMessage;
+    }
+
+    public ArrayList<Message> getAllMessages() {
+        return messageRepo.getAllMessages();
     }
 
     public boolean validMessage(String str) {

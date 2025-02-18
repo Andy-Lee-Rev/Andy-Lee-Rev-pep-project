@@ -9,6 +9,8 @@ import Service.AccountService;
 import Model.Message;
 import Service.MessageService;
 
+import java.util.ArrayList;
+
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
  * found in readme.md as well as the test cases. You should
@@ -28,6 +30,7 @@ public class SocialMediaController {
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
         app.post("/messages", this::postMessageHandler);
+        app.get("/messages", this::getMessagesHandler);
 
         return app;
     }
@@ -66,12 +69,17 @@ public class SocialMediaController {
     private void postMessageHandler(Context context) {
         Message msg = context.bodyAsClass(Message.class);
         Message postedMsg = messageService.postMessage(msg);
-        
+
         if (postedMsg == null) {
             context.status(400);
         } else {
             context.status(200).json(postedMsg);
         }
+    }
+
+    private void getMessagesHandler(Context context) {
+        ArrayList<Message> allMessages = messageService.getAllMessages();
+        context.status(200).json(allMessages);
     }
 
 
