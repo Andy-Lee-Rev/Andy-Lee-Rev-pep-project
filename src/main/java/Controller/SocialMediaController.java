@@ -31,6 +31,7 @@ public class SocialMediaController {
         app.post("/login", this::loginHandler);
         app.post("/messages", this::postMessageHandler);
         app.get("/messages", this::getMessagesHandler);
+        app.get("/messages/{message_id}", this::getMessageByIdHandler);
 
         return app;
     }
@@ -82,6 +83,15 @@ public class SocialMediaController {
         context.status(200).json(allMessages);
     }
 
+    private void getMessageByIdHandler(Context context) {
+        Integer messageId = Integer.parseInt(context.pathParam("message_id"));
+        Message existsMessage = messageService.getMessageById(messageId);
+        if (existsMessage != null) {
+            context.status(200).json(existsMessage);
+        } else {
+            context.status(200).json("");
+        }
+    }
 
 
 }

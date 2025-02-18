@@ -39,6 +39,10 @@ public class MessageService {
         return messageRepo.getAllMessages();
     }
 
+    public Message getMessageById(Integer id) {
+        return messageRepo.getMessageById(id);
+    }
+
     public boolean validMessage(String str) {
         if (str.length() > 255 || isBlank(str)) {
             return false;
