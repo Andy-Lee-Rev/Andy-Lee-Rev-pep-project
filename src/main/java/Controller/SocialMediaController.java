@@ -6,6 +6,9 @@ import io.javalin.http.Context;
 import Model.Account;
 import Service.AccountService;
 
+import Model.Message;
+import Service.MessageService;
+
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
  * found in readme.md as well as the test cases. You should
@@ -13,6 +16,7 @@ import Service.AccountService;
  */
 public class SocialMediaController {
     private final AccountService accountService = new AccountService();
+    private final MessageService messageService = new MessageService();
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -23,6 +27,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerHandler);
         app.post("/login", this::loginHandler);
+        app.post("/messages", this::postMessageHandler);
 
         return app;
     }
@@ -44,7 +49,6 @@ public class SocialMediaController {
         } else {
             context.status(200).json(registeredAccount);
         }
-        return;
     }
 
     private void loginHandler(Context context) {
@@ -57,7 +61,17 @@ public class SocialMediaController {
         else {
             context.status(200).json(existsAccount);
         }
-        return;
+    }
+
+    private void postMessageHandler(Context context) {
+        Message msg = context.bodyAsClass(Message.class);
+        Message postedMsg = messageService.postMessage(msg);
+        
+        if (postedMsg == null) {
+            context.status(400);
+        } else {
+            context.status(200).json(postedMsg);
+        }
     }
 
 

@@ -35,6 +35,10 @@ public class AccountService {
         return storedAccount;
     }
 
+    public Account findById(Integer id) {
+        return accountRepo.findByID(id);
+    }
+
     private boolean isBlank(String str) {
         return str == null || str.trim().isEmpty();
     }

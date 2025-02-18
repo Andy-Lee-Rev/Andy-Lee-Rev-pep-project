@@ -48,4 +48,25 @@ public class AccountRepository {
         return null;
         
     }
+
+    public Account findByID(Integer id) {
+        String sql = "SELECT * FROM Account WHERE account_id = ?";
+        try (Connection conn = ConnectionUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Account(
+                    rs.getInt("account_id"),
+                    rs.getString("username"),
+                    rs.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+        
+    }
 }
