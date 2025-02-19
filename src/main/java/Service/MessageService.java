@@ -16,7 +16,6 @@ public class MessageService {
         System.out.println("Received message: " + msg);
         // Check for valid message text (not blank, not too long)
         if (!validMessage(msg.getMessage_text())) {
-            System.out.println("Invalid message text: " + msg.getMessage_text());
             return null;
         }
 
@@ -47,8 +46,16 @@ public class MessageService {
         return messageRepo.deleteMessageById(id);
     }
 
+    public Message updateMessageById(Integer id, String text) {
+        if (!validMessage(text)) {
+            return null;
+        }
+        return messageRepo.updateMessageById(id, text);
+    }
+
     public boolean validMessage(String str) {
         if (str.length() > 255 || isBlank(str)) {
+            System.out.println("Invalid message text: " + str);
             return false;
         }
         return true;

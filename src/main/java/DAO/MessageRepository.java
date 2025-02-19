@@ -107,4 +107,34 @@ public class MessageRepository {
             }
             return null;
     }
+
+    public Message updateMessageById(Integer id, String text) {
+        String sql = "SELECT * FROM Message WHERE message_id = ?";
+        Message message = null;
+
+        try (Connection conn = ConnectionUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, id);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        message = new Message(
+                            rs.getInt("message_id"),
+                            rs.getInt("posted_by"),
+                            rs.getString("message_text"),
+                            rs.getLong("time_posted_epoch")
+                        );
+                    }
+                }
+                if (message != null) {
+                    message.setMessage_text(text);
+                    return message;
+                } else {
+                    return null;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+    }
 }
