@@ -53,6 +53,10 @@ public class MessageService {
         return messageRepo.updateMessageById(id, text);
     }
 
+    public ArrayList<Message> getMessagesByAccount(Integer id) {
+        return messageRepo.getMessagesByAccount(id);
+    }
+
     public boolean validMessage(String str) {
         if (str.length() > 255 || isBlank(str)) {
             System.out.println("Invalid message text: " + str);

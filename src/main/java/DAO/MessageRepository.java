@@ -137,4 +137,30 @@ public class MessageRepository {
             }
             return null;
     }
+
+    public ArrayList<Message> getMessagesByAccount(Integer Id) {
+        String sql = "SELECT * FROM Message WHERE posted_by = ?";
+        ArrayList<Message> messages = new ArrayList<Message>();
+        try (Connection conn = ConnectionUtil.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setInt(1, Id);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    while (rs.next()) {
+                        Message message = new Message(
+                            rs.getInt("message_id"),
+                            rs.getInt("posted_by"),
+                            rs.getString("message_text"),
+                            rs.getLong("time_posted_epoch")
+                        );
+                        messages.add(message);
+                    }
+                    return messages;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            }
+            return null;
+    }
 }
