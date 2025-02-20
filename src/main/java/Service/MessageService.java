@@ -13,21 +13,20 @@ public class MessageService {
     private final MessageRepository messageRepo = new MessageRepository();
 
     public Message postMessage(Message msg) {
-        System.out.println("Received message: " + msg);
-        // Check for valid message text (not blank, not too long)
+        //System.out.println("Received message: " + msg);
         if (!validMessage(msg.getMessage_text())) {
             return null;
         }
 
         Account existsAccount = accountRepo.findByID(msg.getPosted_by());
         if (existsAccount == null) {
-            System.out.println("Account not found: " + msg.getPosted_by());
+            //System.out.println("Account not found: " + msg.getPosted_by());
             return null;
         }
 
         Message savedMessage = messageRepo.postMessage(msg);
         if (savedMessage == null) {
-            System.out.println("Failed to save the message.");
+            //System.out.println("Failed to save the message.");
             return null;
         }
 
@@ -59,7 +58,7 @@ public class MessageService {
 
     public boolean validMessage(String str) {
         if (str.length() > 255 || isBlank(str)) {
-            System.out.println("Invalid message text: " + str);
+            //System.out.println("Invalid message text: " + str);
             return false;
         }
         return true;
